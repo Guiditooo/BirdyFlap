@@ -62,6 +62,7 @@ public class Store : MonoBehaviour
 
     public void GoToMenu()
     {
+        //CosmeticPrefs.SaveActualCosmetics();
         SceneManager.LoadScene("MainMenu");
     }
 
@@ -164,9 +165,10 @@ public class Store : MonoBehaviour
                     manager.SetPoints(totalPoints);
                     pointCurr.text = totalPoints.ToString();
                     Debug.Log("Comprado item " + actualIndex + " a " + cosmetics[actualIndex].GetPrice().quantity + " puntos.");
-#if UNITY_ANDROID && !UNITY_EDITOR
-                    Logger.SaveCurrencyInFile(totalPoints, totalCoins, manager.GetMaxPoints().points, manager.GetMaxPoints().coins,manager.GetCosmeticList());
-#endif
+
+                    if (Application.platform == RuntimePlatform.Android)
+                        Logger.SaveCurrencyInFile(totalPoints, totalCoins, manager.GetMaxPoints().points, manager.GetMaxPoints().coins,manager.GetCosmeticList());
+
 
                 }
             }
@@ -179,9 +181,10 @@ public class Store : MonoBehaviour
                     manager.SetCoins(totalCoins);
                     coinCurr.text = totalCoins.ToString();
                     Debug.Log("Comprado item " + actualIndex + " a " + cosmetics[actualIndex].GetPrice().quantity + " coins.");
-#if UNITY_ANDROID && !UNITY_EDITOR
-                    Logger.SaveCurrencyInFile(totalPoints, totalCoins, manager.GetMaxPoints().points, manager.GetMaxPoints().coins,manager.GetCosmeticList());
-#endif
+
+                    if (Application.platform == RuntimePlatform.Android)
+                        Logger.SaveCurrencyInFile(totalPoints, totalCoins, manager.GetMaxPoints().points, manager.GetMaxPoints().coins,manager.GetCosmeticList());
+
                 }
             }
             if (cosmetics[actualIndex].IsBought())

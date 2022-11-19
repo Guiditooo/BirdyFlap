@@ -9,17 +9,19 @@ public class CallPlugin : MonoBehaviour
 
     public void CallThePlugin()
     {
-#if UNITY_ANDROID && !UNITY_EDITOR
+
+        if (Application.platform == RuntimePlatform.Android)
             test.text = Logger.DebugReadedFile();
-#endif
         //Debug.Log("Se han modificado cosas en el archivo de logs");
     }
     public void EraseFile()
     {
-#if UNITY_ANDROID && !UNITY_EDITOR
+        if (Application.platform == RuntimePlatform.Android)
+        {
             Logger.CleanFile();
             test.text = Logger.DebugReadedFile();
-#endif
+        }
+
         Debug.Log("Se ha limpiado el archivo de logs");
     }
 }

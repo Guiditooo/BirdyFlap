@@ -25,11 +25,12 @@ public class Logger
     }
     static void initContext()
     {
-#if UNITY_ANDROID && !UNITY_EDITOR
-        unityPlayer = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
-        activity = unityPlayer.GetStatic<AndroidJavaObject>("currentActivity");
-        context = activity.Call<AndroidJavaObject>("getApplicationContext");
-#endif
+        if (Application.platform == RuntimePlatform.Android)
+        {
+            unityPlayer = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
+            activity = unityPlayer.GetStatic<AndroidJavaObject>("currentActivity");
+            context = activity.Call<AndroidJavaObject>("getApplicationContext");
+        }
     }
     public static void SendLog(string msg)
     {
@@ -38,7 +39,6 @@ public class Logger
             init();
         }
 
-        //LoggerInstance.Call("MyPlugin", msg);
         LoggerInstance.Call("ShowMessage", msg);
     }
 
@@ -67,7 +67,7 @@ public class Logger
 
         LoggerInstance?.Call("addToFile", content, context);
 
-        Debug.Log("Creado un nuevo Archivo. O se actualizo uno viejo.\n");
+        Debug.Log("Creado un nuevo Archivo o se actualizo uno viejo.\n");
 
     }
 
@@ -84,7 +84,7 @@ public class Logger
         }
 
         LoggerInstance?.Call("cleanFile", context);
-        LoggerInstance?.Call("cleanSaveFile", context);
+        LoggerInstance?.Call("saveCurrency", Manager.DefaultSaveFileText, context);
 
         Debug.Log("Archivos Reseteados.\n");
     }
@@ -103,7 +103,7 @@ public class Logger
 
         string fileRead = LoggerInstance.Call<string>("readFromSaveFile", context);
 
-        //Debug.Log("Mostrando el valor del archivo.");
+        Debug.Log("\nLeido del archivo: " + fileRead + ".\n");
 
         return fileRead;
     }
@@ -126,8 +126,17 @@ public class Logger
 
         for (int i = 0; i < cos.Count; i++)
         {
-            data += cos[i].IsEquipped() ? "t" : "f";
-            if(i<cos.Count-1)
+
+            if (cos[i].IsEquipped())
+            {
+                data += "t";
+            }
+            else
+            {
+                data += "f";
+            }
+
+            if (i<cos.Count-1)
             {
                 data += "_";
             }
@@ -137,17 +146,27 @@ public class Logger
 
         for (int i = 0; i < cos.Count; i++)
         {
-            data += cos[i].IsBought() ? "t" : "f";
+            if(cos[i].IsBought())
+            {
+                data += "t";
+            }
+            else
+            {
+                data += "f";
+            }
+
             if (i < cos.Count - 1)
             {
                 data += "_";
             }
         }
+        Debug.Log("\nEnviado desde unity: " + data + ".\n");
 
-        Debug.Log(data);
-        #if UNITY_ANDROID && !UNITY_EDITOR
-        LoggerInstance?.Call("saveCurrency", data, context);
-#endif
+
+        if (Application.platform == RuntimePlatform.Android)
+        {
+            LoggerInstance?.Call("saveCurrency", data, context);
+        }
     }
 
 }

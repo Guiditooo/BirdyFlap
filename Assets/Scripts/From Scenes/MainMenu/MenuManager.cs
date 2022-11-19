@@ -10,6 +10,7 @@ public class MenuManager : MonoBehaviour
 
     [SerializeField] private CanvasGroup mainMenuPanel;
     [SerializeField] private CanvasGroup creditPanel;
+    [SerializeField] private CanvasGroup logPanel;
 
     [SerializeField] private Image hatSkin;
     [SerializeField] private Image beakSkin;
@@ -20,26 +21,36 @@ public class MenuManager : MonoBehaviour
     void Awake()
     {
         manager = Manager.GetInstance();
+        manager.GetFileParameters();
         GetBirdSkins();
         Application.logMessageReceived += HandleLog;
     }
 
+    private void OnDestroy()
+    {
+        Application.logMessageReceived -= HandleLog;
+    }
+
     void HandleLog(string logString, string stackTrace, LogType type)
     {
-        #if UNITY_ANDROID && !UNITY_EDITOR
-        Logger.WriteInContextFile(logString);
-#endif
+
+        if (Application.platform == RuntimePlatform.Android)
+            Logger.WriteInContextFile(logString);
     }
 
     public float showSpeed = 1;
     public void Start()
     {
-        LoadMainMenuPanel();
+        UnloadPanel(creditPanel);
+        UnloadPanel(logPanel);
+        if(mainMenuPanel.alpha!=1)
+            LoadPanel(mainMenuPanel);
     }
     public void LoadMainMenuPanel()
     {
         StopAllCoroutines();
         UnloadPanel(creditPanel);
+        UnloadPanel(logPanel);
         LoadPanel(mainMenuPanel);
         Debug.Log("Inicia el panel de menu");
     }
@@ -50,6 +61,14 @@ public class MenuManager : MonoBehaviour
         LoadPanel(creditPanel);
         Debug.Log("Inicia el panel de creditos");
     }
+    public void LoadLogsPanel()
+    {
+        StopAllCoroutines();
+        UnloadPanel(mainMenuPanel);
+        LoadPanel(logPanel);
+        Debug.Log("Inicia el panel de logs");
+    }
+
     public void LoadStoreScene()
     {
         Debug.Log("Deja el menu, y se va a la tienda");

@@ -9,9 +9,8 @@ public class Auth : MonoBehaviour
 
     void Start()
     {
-#if UNITY_ANDROID && !UNITY_EDITOR
-        Init();
-#endif
+        if (Application.platform == RuntimePlatform.Android)
+            Init();
     }
     private void Init()
     {
@@ -43,25 +42,30 @@ public class Auth : MonoBehaviour
 
     static public void ShowAchievements()
     {
-#if UNITY_ANDROID && !UNITY_EDITOR
-        if (Social.Active.localUser.authenticated)
-        {
 
-            platform.ShowAchievementsUI();
-            Logger.SendLog("\nMostrando logros\n");
+        if (Application.platform == RuntimePlatform.Android)
+        {
+            if (Social.Active.localUser.authenticated)
+            {
+
+                platform.ShowAchievementsUI();
+                Logger.SendLog("\nMostrando logros\n");
+            }
+        }
     }
-#endif
-}
+
 
     static public void UnlockAchievement(string a)
     {
-#if UNITY_ANDROID && !UNITY_EDITOR
-        if (Social.Active.localUser.authenticated)
+
+        if (Application.platform == RuntimePlatform.Android)
         {
-            Social.ReportProgress(a, 100f, success => { });
-            Logger.SendLog("\nLogro desbloqueado!\n");
+            if (Social.Active.localUser.authenticated)
+            {
+                Social.ReportProgress(a, 100f, success => { });
+                Logger.SendLog("\nLogro desbloqueado!\n");
+            }
         }
-#endif
     }
 
 }

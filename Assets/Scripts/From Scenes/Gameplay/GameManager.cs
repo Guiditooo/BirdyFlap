@@ -67,7 +67,9 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
-        manager = Manager.GetInstance();
+        manager = new Manager();
+        manager.GetFileParameters();
+
         playerAlive = player.GetComponent<Player>().alive;
         Player.onPlayerCollision += StopMovement;
 
@@ -93,8 +95,13 @@ public class GameManager : MonoBehaviour
 
     }
 
+    private void OnDestroy()
+    {
+        Player.onPlayerCollision -= StopMovement;
+    }
+
     // Start is called before the first frame update
-    
+
 
     public void Start()
     {
@@ -152,10 +159,11 @@ public class GameManager : MonoBehaviour
                     manager.SetMaxCoins(coinsInGame);
                 }
 
-//#if UNITY_ANDROID && !UNITY_EDITOR
-                
-                Logger.SaveCurrencyInFile(pointsTotal, coinsTotal, manager.GetMaxPoints().points, manager.GetMaxPoints().coins, manager.GetCosmeticList());
-//#endif
+
+                if (Application.platform == RuntimePlatform.Android)
+
+                    Logger.SaveCurrencyInFile(pointsTotal, coinsTotal, manager.GetMaxPoints().points, manager.GetMaxPoints().coins, manager.GetCosmeticList());
+
 
                 Manager.CheckPointAchievement(pointsInGame);
                 Manager.CheckAccumultarionAchievement(pointsTotal);
@@ -293,19 +301,22 @@ public class GameManager : MonoBehaviour
     public void EnterStore()
     {
         SendCurrency();
-#if UNITY_ANDROID && !UNITY_EDITOR
-            //Logger.SendFilePath();
-#endif
-        Debug.Log("Yendo a la STORE, desde el GAMEPLAY");
+
+        if (Application.platform == RuntimePlatform.Android)
+        {
+           // Logger.SendFilePath();
+        }
+
+            Debug.Log("Yendo a la STORE, desde el GAMEPLAY");
         SceneManager.LoadScene("Store");
     }
     private void SendCurrency()
     {
         manager.SetCoins(coinsTotal);
         manager.SetPoints(pointsTotal);
-#if UNITY_ANDROID && !UNITY_EDITOR
+
+        if (Application.platform == RuntimePlatform.Android)
             Logger.SendCurrency(pointsTotal, coinsTotal, "GAMEPLAY");
-#endif
 
         Debug.Log("Currency enviada al archivo en el celular.");
     }
