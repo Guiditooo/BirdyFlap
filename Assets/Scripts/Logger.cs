@@ -18,10 +18,11 @@ public class Logger
 
     static void init()
     {
-#if UNITY_ANDROID && !UNITY_EDITOR
-        LoggerClass = new AndroidJavaClass(PACK_NAME + "." + LOGGER_CLASS_NAME);
-        LoggerInstance = LoggerClass.CallStatic<AndroidJavaObject>("GetInstance");
-#endif
+        if (Application.platform == RuntimePlatform.Android)
+        {
+            LoggerClass = new AndroidJavaClass(PACK_NAME + "." + LOGGER_CLASS_NAME);
+            LoggerInstance = LoggerClass.CallStatic<AndroidJavaObject>("GetInstance");
+        }
     }
     static void initContext()
     {
@@ -42,16 +43,6 @@ public class Logger
         LoggerInstance.Call("ShowMessage", msg);
     }
 
-    public static void SendCurrency(int points, int coins, string from)
-    {
-        if (LoggerInstance == null)
-        {
-            init();
-        }
-        LoggerInstance?.Call("GetCurrency", points, coins, from);
-    }
-
-
     public static void WriteInContextFile(string content)
     {
 
@@ -71,7 +62,7 @@ public class Logger
 
     }
 
-    public static void CleanFile()
+    public static void CleanLog()
     {
         if (LoggerInstance == null)
         {
@@ -84,89 +75,8 @@ public class Logger
         }
 
         LoggerInstance?.Call("cleanFile", context);
-        LoggerInstance?.Call("saveCurrency", Manager.DefaultSaveFileText, context);
 
         Debug.Log("Archivos Reseteados.\n");
-    }
-
-    public static string DebugReadedFile()
-    {
-        if (LoggerInstance == null)
-        {
-            init();
-        }
-
-        if (context == null)
-        {
-            initContext();
-        }
-
-        string fileRead = LoggerInstance.Call<string>("readFromSaveFile", context);
-
-        Debug.Log("\nLeido del archivo: " + fileRead + ".\n");
-
-        return fileRead;
-    }
-
-    public static void SaveCurrencyInFile(int points, int coins, int maxPoints, int maxCoins, List<Cosmetic> cos)
-    {
-        if (LoggerInstance == null)
-        {
-            init();
-        }
-
-        if (context == null)
-        {
-            initContext();
-        }
-
-        string data;
-
-        data = points.ToString() + "_" + coins.ToString() + "_" + maxPoints.ToString() + "_" + maxCoins.ToString() + "-";
-
-        for (int i = 0; i < cos.Count; i++)
-        {
-
-            if (cos[i].IsEquipped())
-            {
-                data += "t";
-            }
-            else
-            {
-                data += "f";
-            }
-
-            if (i<cos.Count-1)
-            {
-                data += "_";
-            }
-        }
-
-        data += "-";
-
-        for (int i = 0; i < cos.Count; i++)
-        {
-            if(cos[i].IsBought())
-            {
-                data += "t";
-            }
-            else
-            {
-                data += "f";
-            }
-
-            if (i < cos.Count - 1)
-            {
-                data += "_";
-            }
-        }
-        Debug.Log("\nEnviado desde unity: " + data + ".\n");
-
-
-        if (Application.platform == RuntimePlatform.Android)
-        {
-            LoggerInstance?.Call("saveCurrency", data, context);
-        }
     }
 
 }

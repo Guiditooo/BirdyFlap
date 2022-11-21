@@ -21,7 +21,6 @@ public class MenuManager : MonoBehaviour
     void Awake()
     {
         manager = Manager.GetInstance();
-        manager.GetFileParameters();
         GetBirdSkins();
         Application.logMessageReceived += HandleLog;
     }

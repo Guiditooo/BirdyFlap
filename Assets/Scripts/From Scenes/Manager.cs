@@ -25,12 +25,6 @@ public enum CurrencyType
     Points,
     Coins
 }
-
-public struct Currency
-{
-    public int points;
-    public int coins;
-}
 public struct Bird
 {
     public int hat_color;
@@ -50,14 +44,14 @@ public class Manager : MonoBehaviour
     public static int SkinBeakColorCount = 2;
     public static int SkinEyeColorCount = 2;
 
-    public static string DefaultSaveFileText = "0_0_0_0-t_f_f_f_f_t_f_t_f-t_f_f_f_f_t_f_t_f";
+    //public static string DefaultSaveFileText = "0_0_0_0-t_f_f_f_f_t_f_t_f-t_f_f_f_f_t_f_t_f";
 
     public List<Cosmetic> cosmetics = new List<Cosmetic>(SkinBeakColorCount + SkinEyeColorCount + SkinHatColorCount);
 
-    private Currency currency;
     public Skin skin;
 
-    private Currency maxCurrencyEarned;
+    private int points;
+    private int maxPointsEarned;
 
     public static Skin GetDefaultSkin()
     {
@@ -85,22 +79,18 @@ public class Manager : MonoBehaviour
 
             if (Application.platform == RuntimePlatform.Android)
             { 
-                GetFileParameters();          
+                
             }
             else
             {
-
-            currency.coins = 0;
-            currency.points = 0;
-            maxCurrencyEarned.coins = 0;
-            maxCurrencyEarned.points = 0;
+            points = 0;
+            maxPointsEarned = 0;
 
             skin.bird.eyes = 7;
             skin.bird.hat_color = 0;
             skin.bird.beak = 5;
 
             }
-
 
             skin.tube = 0;
 
@@ -114,42 +104,29 @@ public class Manager : MonoBehaviour
     {
         return instance;
     }
-    public Currency GetCurrency()
+    public int GetPoints()
     {
-        return currency;
+        return points;
     }
-    public Currency GetMaxPoints()
+    public int GetMaxPoints()
     {
-        return maxCurrencyEarned;
+        return maxPointsEarned;
     }
-    public void SetMaxPoints(int points)
+    public void SetMaxPoints(int newMaxPoints)
     {
-        Debug.Log("Puntos maximos hechos: " + points);
-        maxCurrencyEarned.points = points;
+        Debug.Log("Puntos maximos hechos: " + newMaxPoints);
+        maxPointsEarned = points;
     }
-    public void SetMaxCoins(int coins)
+
+    public void SetPoints(int newPoints)
     {
-        Debug.Log("Monedas maximas agarradas: " + coins);
-        maxCurrencyEarned.coins = coins;
-    }
-    public void SetPoints(int points)
-    {
-        Debug.Log("Ahora se tienen " + points + " puntos.");
-        currency.points = points;
+        Debug.Log("Ahora se tienen " + newPoints + " puntos.");
+        points = newPoints;
     }
     
-    public void SetCoins(int coins)
-    {
-        Debug.Log("Ahora se tienen " + coins + " monedas."); 
-        currency.coins = coins;
-    }
     public Skin GetSkins()
     {
         return skin;
-    }
-    public void SelectBirdSkin(int index)
-    {
-        //skin.bird = index;
     }
     public void SelectTubeSkin(int index)
     {
@@ -158,55 +135,6 @@ public class Manager : MonoBehaviour
     public List<Cosmetic> GetCosmeticList()
     {
         return cosmetics;
-    }
-    public void GetFileParameters()
-    {
-        string data = "";
-
-        if (Application.platform == RuntimePlatform.Android)
-            data = Logger.DebugReadedFile();
-        else
-        data = DefaultSaveFileText;
-
-        string[] types = data.Split('-');
-        string[] cur = types[0].Split('_');
-
-        currency.points = int.Parse(cur[0]);
-        currency.coins = int.Parse(cur[1]);
-        maxCurrencyEarned.points = int.Parse(cur[2]);
-        maxCurrencyEarned.coins = int.Parse(cur[3]);
-
-        string[] equipped = types[1].Split('_');
-
-        for (int i = 0; i < cosmetics.Count; i++)
-        {
-            cosmetics[i].SetIfEquiped(equipped[i].Equals('t'));
-            if (cosmetics[i].IsEquipped())
-            {
-                switch (cosmetics[i].cosmetic)
-                {
-                    case CosmeticType.Hat:
-                        skin.bird.hat_color = i;
-                        break;
-                    case CosmeticType.Beak:
-                        skin.bird.beak = i;
-                        break;
-                    case CosmeticType.Eyes:
-                        skin.bird.eyes = i;
-                        break;
-                    default:
-                        break;
-                }
-            }
-        }
-
-        string[] bought = types[2].Split('_');
-
-        for (int i = 0; i < cosmetics.Count; i++)
-        {
-            cosmetics[i].SetIfBougth(bought[i].Equals('t'));
-            
-        }
     }
 
     public static void CheckPointAchievement(int realizedPoints)

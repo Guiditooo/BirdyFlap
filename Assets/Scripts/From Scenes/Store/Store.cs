@@ -10,11 +10,9 @@ public class Store : MonoBehaviour
 
     [SerializeField] private CanvasGroup panel;
 
-    [SerializeField] private TMP_Text coinCurr;
     [SerializeField] private TMP_Text pointCurr;
 
     [SerializeField] private TMP_Text price;
-    [SerializeField] private GameObject priceCoinCurr;
     [SerializeField] private GameObject pricePointsCurr;
 
     [SerializeField] private GameObject hat;
@@ -38,11 +36,9 @@ public class Store : MonoBehaviour
     void Awake()
     {
         manager = Manager.GetInstance();
-        totalCoins = manager.GetCurrency().coins;
         //totalCoins = 9999;
-        totalPoints = manager.GetCurrency().points;
+        totalPoints = manager.GetPoints();
         //totalPoints = 9999;
-        coinCurr.text = totalCoins.ToString();
         pointCurr.text = totalPoints.ToString();
         cosmetics = manager.GetCosmeticList();
 
@@ -62,6 +58,8 @@ public class Store : MonoBehaviour
 
     public void GoToMenu()
     {
+        
+
         //CosmeticPrefs.SaveActualCosmetics();
         SceneManager.LoadScene("MainMenu");
     }
@@ -131,21 +129,16 @@ public class Store : MonoBehaviour
             {
                 pricePointsCurr.SetActive(true);
             }
-            else
-            { 
-                priceCoinCurr.SetActive(true);
-            }
             price.text = cosmetics[index].GetPrice().quantity.ToString();
         }
         else
         {
-            price.text = !cosmetics[index].IsEquipped() ? "BOUGHT" : "EQUIPPED";
+            price.text = cosmetics[index].IsEquipped() ? "EQUIPPED" : "BOUGHT";
         }
     }
     void ResetSkin(int i)
     {
         pricePointsCurr.SetActive(false);
-        priceCoinCurr.SetActive(false);
         price.text = "";
         hatSprite.sprite = cosmetics[Manager.GetDefaultSkin().bird.hat_color].GetSprite();
         beakSprite.sprite = cosmetics[Manager.GetDefaultSkin().bird.beak].GetSprite();
@@ -166,31 +159,13 @@ public class Store : MonoBehaviour
                     pointCurr.text = totalPoints.ToString();
                     Debug.Log("Comprado item " + actualIndex + " a " + cosmetics[actualIndex].GetPrice().quantity + " puntos.");
 
-                    if (Application.platform == RuntimePlatform.Android)
-                        Logger.SaveCurrencyInFile(totalPoints, totalCoins, manager.GetMaxPoints().points, manager.GetMaxPoints().coins,manager.GetCosmeticList());
-
-
-                }
-            }
-            else
-            {
-                if (totalCoins >= cosmetics[actualIndex].GetPrice().quantity)
-                {
-                    totalCoins -= cosmetics[actualIndex].GetPrice().quantity;
-                    cosmetics[actualIndex].Buy();
-                    manager.SetCoins(totalCoins);
-                    coinCurr.text = totalCoins.ToString();
-                    Debug.Log("Comprado item " + actualIndex + " a " + cosmetics[actualIndex].GetPrice().quantity + " coins.");
-
-                    if (Application.platform == RuntimePlatform.Android)
-                        Logger.SaveCurrencyInFile(totalPoints, totalCoins, manager.GetMaxPoints().points, manager.GetMaxPoints().coins,manager.GetCosmeticList());
+                    //Logger.SaveCurrencyInFile(totalPoints, totalCoins, manager.GetMaxPoints().points, manager.GetMaxPoints().coins,manager.GetCosmeticList());
 
                 }
             }
             if (cosmetics[actualIndex].IsBought())
             {
                 pricePointsCurr.SetActive(false);
-                priceCoinCurr.SetActive(false);
                 price.text = "BOUGHT";
                 Debug.Log("Item " + actualIndex + " cambia su estado a 'COMPRADO'");
             }

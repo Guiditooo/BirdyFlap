@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public struct CosmeticPrefs
 {
     private static string actualHatKey = "aHat";
@@ -10,7 +11,7 @@ public struct CosmeticPrefs
 
     public int actualHat;
     public int actualBeak;
-    public int actualEyes;
+    public int actualEyes;    
 
     public static void SaveActualCosmetics(int aHat, int aBeak, int aEyes)
     {

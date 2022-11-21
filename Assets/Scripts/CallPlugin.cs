@@ -9,19 +9,8 @@ public class CallPlugin : MonoBehaviour
 
     public void CallThePlugin()
     {
-
-        if (Application.platform == RuntimePlatform.Android)
-            test.text = Logger.DebugReadedFile();
+        //if (Application.platform == RuntimePlatform.Android)
+            //test.text = Logger.DebugReadedFile();
         //Debug.Log("Se han modificado cosas en el archivo de logs");
-    }
-    public void EraseFile()
-    {
-        if (Application.platform == RuntimePlatform.Android)
-        {
-            Logger.CleanFile();
-            test.text = Logger.DebugReadedFile();
-        }
-
-        Debug.Log("Se ha limpiado el archivo de logs");
     }
 }

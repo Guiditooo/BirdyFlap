@@ -13,12 +13,9 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] private TMP_Text txtPointsOnGame;
     [SerializeField] private TMP_Text txtPointsOnUI;
-    [SerializeField] private TMP_Text txtCoinsOnUI;
-    [SerializeField] private TMP_Text txtCoinsTotal;
     [SerializeField] private TMP_Text txtPointsTotal;
 
     [SerializeField] private TMP_Text txtHighPoints;
-    [SerializeField] private TMP_Text txtHighCoins;
 
     [SerializeField] private CanvasGroup endScreen;
     public float UIshowSpeed = 1;
@@ -43,13 +40,11 @@ public class GameManager : MonoBehaviour
     private bool[] justChecked = null;
 
     private int pointsInGame = 0;
-    private int coinsInGame = 0;
     private int pointsTotal = 0;
-    private int coinsTotal = 0;
 
     private bool playerAlive = false;
 
-    private Currency higher;
+    private int higher;
 
     [SerializeField] private float tubeSpeed = 1;
     [SerializeField] private float tubeAugmentCoef = 1.000001f;
@@ -67,19 +62,16 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
-        manager = new Manager();
-        manager.GetFileParameters();
+        manager = Manager.GetInstance();
 
         playerAlive = player.GetComponent<Player>().alive;
         Player.onPlayerCollision += StopMovement;
 
-        pointsTotal = manager.GetCurrency().points;
-        coinsTotal = manager.GetCurrency().coins;
+        pointsTotal = manager.GetPoints();
 
         higher = manager.GetMaxPoints();
 
-        txtHighPoints.text = higher.points.ToString();
-        txtHighCoins.text = higher.coins.ToString();
+        txtHighPoints.text = higher.ToString();
 
         hatSkin = hat.GetComponent<SpriteRenderer>();
         beakSkin = beak.GetComponent<SpriteRenderer>();
@@ -88,19 +80,12 @@ public class GameManager : MonoBehaviour
 
         GetBirdSkins();
 
-        coins = new GameObject[obstacles.Length];
-        //GetCoinRefs();
-
-        //SetCoinY();
-
     }
 
     private void OnDestroy()
     {
         Player.onPlayerCollision -= StopMovement;
     }
-
-    // Start is called before the first frame update
 
 
     public void Start()
@@ -117,7 +102,6 @@ public class GameManager : MonoBehaviour
         higher = manager.GetMaxPoints();
 
         pointsInGame = 0;
-        coinsInGame = 0;
     }
 
     // Update is called once per frame
@@ -127,7 +111,6 @@ public class GameManager : MonoBehaviour
         {
             MoveTubes();
             CheckTubes();
-            //MoveCoins();
             CheckScore();
         }
         else
@@ -136,34 +119,21 @@ public class GameManager : MonoBehaviour
             {
                 txtPointsOnGame.text = "";
                 txtPointsOnUI.text = pointsInGame.ToString();
-                txtCoinsOnUI.text = coinsInGame.ToString();
 
                 pointsTotal += pointsInGame;
-                coinsTotal += coinsInGame;
 
                 Debug.Log("Se ha terminado la partida con " + pointsInGame + " puntos.");
                 Debug.Log("Se tienen un total de " + pointsTotal + " puntos.");
                 
                 txtPointsTotal.text = GetTotalCurrency(pointsTotal);
-                txtCoinsTotal.text = GetTotalCurrency(coinsTotal);
 
-                if(HigherThanPrev(pointsInGame,higher.points))
+                if(HigherThanPrev(pointsInGame,higher))
                 {
                     txtHighPoints.text = pointsInGame.ToString();
                     manager.SetMaxPoints(pointsInGame);
                 }
 
-                if (HigherThanPrev(coinsInGame, higher.coins))
-                {
-                    txtHighCoins.text = coinsInGame.ToString();
-                    manager.SetMaxCoins(coinsInGame);
-                }
-
-
-                if (Application.platform == RuntimePlatform.Android)
-
-                    Logger.SaveCurrencyInFile(pointsTotal, coinsTotal, manager.GetMaxPoints().points, manager.GetMaxPoints().coins, manager.GetCosmeticList());
-
+                //Logger.SaveCurrencyInFile(pointsTotal, coinsTotal, manager.GetMaxPoints().points, manager.GetMaxPoints().coins, manager.GetCosmeticList());
 
                 Manager.CheckPointAchievement(pointsInGame);
                 Manager.CheckAccumultarionAchievement(pointsTotal);
@@ -312,13 +282,9 @@ public class GameManager : MonoBehaviour
     }
     private void SendCurrency()
     {
-        manager.SetCoins(coinsTotal);
         manager.SetPoints(pointsTotal);
 
-        if (Application.platform == RuntimePlatform.Android)
-            Logger.SendCurrency(pointsTotal, coinsTotal, "GAMEPLAY");
-
-        Debug.Log("Currency enviada al archivo en el celular.");
+        Debug.Log("int enviada al archivo en el celular.");
     }
     void GetBirdSkins()
     {
@@ -346,53 +312,7 @@ public class GameManager : MonoBehaviour
             }
         }
     }
-    void GetCoinRefs()
-    {
-        List<Component> c = new List<Component>();
-        GameObject obs;
-        for (int i = 0; i < obstacles.Length; i++)
-        {
-            obs = obstacles[i];
-            obs.GetComponentsInChildren(c);
-            for (int j = 0; j < c.Count; j++)
-            {
-                if(c[j].CompareTag("coin"))
-                {
-                    coins[i] = c[j].gameObject;
-                }
-            }
-            c.Clear();
-        }
-    }
-    void SetCoinY()
-    {
-        for (int i = 0; i < coins.Length; i++)
-        {
-            coins[i].transform.position = obstacles[i].transform.position;
-        }
-    }
-    void MoveCoins()
-    {
-        Vector3 pos;
-        float parentPos;
-        for (int i = 0; i < coins.Length; i++)
-        {
-            pos = coins[i].transform.position;
-            parentPos = obstacles[i].transform.position.y;
-            if (pos.y > CoinVerticalMovement.maxY + parentPos)
-            {
-                pos = new Vector3(pos.x, pos.y - 1.0f * Time.deltaTime * 1.1f, pos.z);
-            }
-            if (pos.y < CoinVerticalMovement.minY + parentPos)
-            {
-                pos = new Vector3(pos.x, pos.y + 1.0f * Time.deltaTime * 1.2f, pos.z);
-            }
-        }
-    }
-    void CheckCoinAppearance(ref GameObject c)
-    {
-        c.SetActive(Random.Range(0, 1000) > 950);
-    }
+    
 
     public void ShowAchievements()
     {
