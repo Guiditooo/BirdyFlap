@@ -1089,10 +1089,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   panel: {fileID: 95360930}
-  coinCurr: {fileID: 18358766}
   pointCurr: {fileID: 1645839887}
   price: {fileID: 188942147}
-  priceCoinCurr: {fileID: 984178125}
   pricePointsCurr: {fileID: 1820202404}
   hat: {fileID: 1786031516}
   eyes: {fileID: 1786031515}
@@ -1953,8 +1951,8 @@ RectTransform:
   m_Father: {fileID: 95360929}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.12, y: 0.885}
-  m_AnchorMax: {x: 0.88, y: 0.95}
+  m_AnchorMin: {x: 0.3, y: 0.885}
+  m_AnchorMax: {x: 0.7, y: 0.95}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 1}
@@ -2911,7 +2909,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:

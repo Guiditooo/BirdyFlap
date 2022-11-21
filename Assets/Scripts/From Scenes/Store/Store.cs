@@ -31,13 +31,12 @@ public class Store : MonoBehaviour
     private int actualIndex = 0; 
     private int nextIndex = 0;
 
-    Manager manager;
 
     void Awake()
     {
-        manager = Manager.GetInstance();
+        
         //totalCoins = 9999;
-        totalPoints = manager.GetPoints();
+        totalPoints = ScorePrefs.GetStoredPoints();
         //totalPoints = 9999;
         pointCurr.text = totalPoints.ToString();
 
@@ -46,20 +45,18 @@ public class Store : MonoBehaviour
         eyesSprite = eyes.GetComponent<Image>();
 
 
-        price.text = cosmetics[actualIndex].IsEquipped() ? "EQUIPPED" : "BOUGHT";
+        price.text = Manager.GetSkinList()[actualIndex].IsEquipped() ? "EQUIPPED" : "BOUGHT";
 
     }
 
     void Start()
     {
         LoadPanelCoroutine(panel);
+        cosmetics = Manager.GetSkinList();
     }
 
     public void GoToMenu()
     {
-        
-
-        //CosmeticPrefs.SaveActualCosmetics();
         SceneManager.LoadScene("MainMenu");
     }
 
@@ -155,7 +152,7 @@ public class Store : MonoBehaviour
                 {
                     totalPoints -= cosmetics[actualIndex].GetPrice().quantity;
                     cosmetics[actualIndex].Buy();
-                    manager.SetPoints(totalPoints);
+                    ScorePrefs.SaveActualTotalPoints(totalPoints);
                     pointCurr.text = totalPoints.ToString();
                     Debug.Log("Comprado item " + actualIndex + " a " + cosmetics[actualIndex].GetPrice().quantity + " puntos.");
 

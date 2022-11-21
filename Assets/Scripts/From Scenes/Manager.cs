@@ -50,6 +50,9 @@ public class Manager : MonoBehaviour
     private static List<Cosmetic> hatSkinList = new List<Cosmetic>(SkinHatColorCount);
     private static List<Cosmetic> beakSkinList = new List<Cosmetic>(SkinBeakColorCount);
     private static List<Cosmetic> eyesSkinList = new List<Cosmetic>(SkinEyeColorCount);
+    private static List<Cosmetic> staticSkinList = new List<Cosmetic>();
+
+    
 
     public Skin skin;
 
@@ -100,6 +103,8 @@ public class Manager : MonoBehaviour
 
             skin.tube = 0;
 
+            staticSkinList = skinList;
+
             DontDestroyOnLoad(gameObject);
         }
     }
@@ -136,6 +141,7 @@ public class Manager : MonoBehaviour
     public static List<Cosmetic> GetHatSkins() => hatSkinList;
     public static List<Cosmetic> GetBeakSkins() => beakSkinList;
     public static List<Cosmetic> GetEyesSkins() => eyesSkinList;
+    public static List<Cosmetic> GetSkinList() => staticSkinList;
 
     public static void CheckPointAchievement(int realizedPoints)
     {

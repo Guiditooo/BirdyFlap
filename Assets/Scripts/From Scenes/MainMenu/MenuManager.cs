@@ -122,9 +122,9 @@ public class MenuManager : MonoBehaviour
     }
     void GetBirdSkin()
     {
-        hatSkin.sprite = Manager.GetHatSkins()[CosmeticPrefs.GetActualHatSkinID()].GetSprite();
-        beakSkin.sprite = Manager.GetBeakSkins()[CosmeticPrefs.GetActualBeakSkinID()].GetSprite();
-        eyesSkin.sprite = Manager.GetEyesSkins()[CosmeticPrefs.GetActualEyesSkinID()].GetSprite();
+        hatSkin.sprite = Manager.GetHatSkins()[CosmeticPrefs.GetEquippedHatSkinID()].GetSprite();
+        beakSkin.sprite = Manager.GetBeakSkins()[CosmeticPrefs.GetEquippedBeakSkinID()].GetSprite();
+        eyesSkin.sprite = Manager.GetEyesSkins()[CosmeticPrefs.GetEquippedEyesSkinID()].GetSprite();
     }
     public void ShowAchievements()
     {

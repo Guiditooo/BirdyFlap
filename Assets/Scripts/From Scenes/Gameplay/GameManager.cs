@@ -66,15 +66,13 @@ public class GameManager : MonoBehaviour
 
         storedPoints = ScorePrefs.GetStoredPoints();
 
-        maxPointsReached = ScorePrefs.GetMaxPointsReached();
+        //maxPointsReached = ScorePrefs.GetMaxPointsReached();
 
         txtHighPoints.text = maxPointsReached.ToString();
-
+        
         hatSkin = hat.GetComponent<SpriteRenderer>();
         beakSkin = beak.GetComponent<SpriteRenderer>();
         eyesSkin = eyes.GetComponent<SpriteRenderer>();
-
-        Debug.Log(hatSkin);
 
         GetBirdSkin();
 
@@ -116,7 +114,7 @@ public class GameManager : MonoBehaviour
                 txtPointsOnGame.text = "";
                 txtPointsOnUI.text = pointsInGame.ToString();
 
-                storedPoints += pointsInGame;
+                 storedPoints += pointsInGame;
 
                 Debug.Log("Se ha terminado la partida con " + pointsInGame + " puntos.");
                 Debug.Log("Se tienen un total de " + storedPoints + " puntos.");
@@ -277,9 +275,9 @@ public class GameManager : MonoBehaviour
     }
     void GetBirdSkin()
     {
-        hatSkin.sprite = Manager.GetHatSkins()[CosmeticPrefs.GetActualHatSkinID()].GetSprite();
-        beakSkin.sprite = Manager.GetBeakSkins()[CosmeticPrefs.GetActualBeakSkinID()].GetSprite();
-        eyesSkin.sprite = Manager.GetEyesSkins()[CosmeticPrefs.GetActualEyesSkinID()].GetSprite();
+        hatSkin.sprite = Manager.GetHatSkins()[CosmeticPrefs.GetEquippedHatSkinID()].GetSprite();
+        beakSkin.sprite = Manager.GetBeakSkins()[CosmeticPrefs.GetEquippedBeakSkinID()].GetSprite();
+        eyesSkin.sprite = Manager.GetEyesSkins()[CosmeticPrefs.GetEquippedEyesSkinID()].GetSprite();
     }
     
 
