@@ -21,7 +21,7 @@ public class MenuManager : MonoBehaviour
     void Awake()
     {
         manager = Manager.GetInstance();
-        GetBirdSkins();
+        GetBirdSkin();
         Application.logMessageReceived += HandleLog;
     }
 
@@ -120,31 +120,11 @@ public class MenuManager : MonoBehaviour
         Debug.Log("Saliendo del juego.");
         Application.Quit();
     }
-    void GetBirdSkins()
+    void GetBirdSkin()
     {
-        for (int i = 0; i < manager.GetCosmeticList().Count; i++)
-        {
-            if(manager.GetCosmeticList()[i].IsEquipped())
-            {
-                switch (manager.GetCosmeticList()[i].cosmetic)
-                {
-                    case CosmeticType.Hat:
-                        //Debug.Log("Skin equipado de sombrero: " + i);
-                        hatSkin.sprite = manager.GetCosmeticList()[i].GetSprite();
-                        break;
-                    case CosmeticType.Beak:
-                        //Debug.Log("Skin equipado de pico: " + i);
-                        beakSkin.sprite = manager.GetCosmeticList()[i].GetSprite();
-                        break;
-                    case CosmeticType.Eyes:
-                        //Debug.Log("Skin equipado de ojos: " + i);
-                        eyesSkin.sprite = manager.GetCosmeticList()[i].GetSprite();
-                        break;
-                    default:
-                        break;
-                }
-            }
-        }
+        hatSkin.sprite = Manager.GetHatSkins()[CosmeticPrefs.GetActualHatSkinID()].GetSprite();
+        beakSkin.sprite = Manager.GetBeakSkins()[CosmeticPrefs.GetActualBeakSkinID()].GetSprite();
+        eyesSkin.sprite = Manager.GetEyesSkins()[CosmeticPrefs.GetActualEyesSkinID()].GetSprite();
     }
     public void ShowAchievements()
     {

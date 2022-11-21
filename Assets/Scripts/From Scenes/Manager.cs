@@ -38,15 +38,18 @@ public struct Skin
 }
 public class Manager : MonoBehaviour
 {
+    
     private static Manager instance = null;
 
-    public static int SkinHatColorCount = 5;
-    public static int SkinBeakColorCount = 2;
-    public static int SkinEyeColorCount = 2;
+    private const int SkinHatColorCount = 5;
+    private const int SkinBeakColorCount = 2;
+    private const int SkinEyeColorCount = 2;
 
-    //public static string DefaultSaveFileText = "0_0_0_0-t_f_f_f_f_t_f_t_f-t_f_f_f_f_t_f_t_f";
+    [SerializeField] private List<Cosmetic> skinList;
 
-    public List<Cosmetic> cosmetics = new List<Cosmetic>(SkinBeakColorCount + SkinEyeColorCount + SkinHatColorCount);
+    private static List<Cosmetic> hatSkinList = new List<Cosmetic>(SkinHatColorCount);
+    private static List<Cosmetic> beakSkinList = new List<Cosmetic>(SkinBeakColorCount);
+    private static List<Cosmetic> eyesSkinList = new List<Cosmetic>(SkinEyeColorCount);
 
     public Skin skin;
 
@@ -77,28 +80,29 @@ public class Manager : MonoBehaviour
         {
             instance = this;
 
-            if (Application.platform == RuntimePlatform.Android)
-            { 
-                
-            }
-            else
+            foreach (Cosmetic skin in skinList)
             {
-            points = 0;
-            maxPointsEarned = 0;
-
-            skin.bird.eyes = 7;
-            skin.bird.hat_color = 0;
-            skin.bird.beak = 5;
-
+                switch (skin.GetCosmeticType())
+                {
+                    case CosmeticType.Hat:
+                        hatSkinList.Add(skin);
+                        break;
+                    case CosmeticType.Beak:
+                        beakSkinList.Add(skin);
+                        break;
+                    case CosmeticType.Eyes:
+                        eyesSkinList.Add(skin);
+                        break;
+                    default:
+                        break;
+                }
             }
 
             skin.tube = 0;
 
-
             DontDestroyOnLoad(gameObject);
         }
     }
-
 
     public static Manager GetInstance()
     {
@@ -123,19 +127,15 @@ public class Manager : MonoBehaviour
         Debug.Log("Ahora se tienen " + newPoints + " puntos.");
         points = newPoints;
     }
-    
-    public Skin GetSkins()
-    {
-        return skin;
-    }
+
     public void SelectTubeSkin(int index)
     {
         skin.tube = index;
     }
-    public List<Cosmetic> GetCosmeticList()
-    {
-        return cosmetics;
-    }
+    public Skin GetSkins() => skin;
+    public static List<Cosmetic> GetHatSkins() => hatSkinList;
+    public static List<Cosmetic> GetBeakSkins() => beakSkinList;
+    public static List<Cosmetic> GetEyesSkins() => eyesSkinList;
 
     public static void CheckPointAchievement(int realizedPoints)
     {

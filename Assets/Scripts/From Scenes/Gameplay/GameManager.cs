@@ -7,8 +7,6 @@ using TMPro;
 public class GameManager : MonoBehaviour
 {
 
-    Manager manager;
-
     bool paused = false;
 
     [SerializeField] private TMP_Text txtPointsOnGame;
@@ -40,11 +38,11 @@ public class GameManager : MonoBehaviour
     private bool[] justChecked = null;
 
     private int pointsInGame = 0;
-    private int pointsTotal = 0;
+    private int storedPoints = 0;
 
     private bool playerAlive = false;
 
-    private int higher;
+    private int maxPointsReached;
 
     [SerializeField] private float tubeSpeed = 1;
     [SerializeField] private float tubeAugmentCoef = 1.000001f;
@@ -62,23 +60,23 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
-        manager = Manager.GetInstance();
 
         playerAlive = player.GetComponent<Player>().alive;
         Player.onPlayerCollision += StopMovement;
 
-        pointsTotal = manager.GetPoints();
+        storedPoints = ScorePrefs.GetStoredPoints();
 
-        higher = manager.GetMaxPoints();
+        maxPointsReached = ScorePrefs.GetMaxPointsReached();
 
-        txtHighPoints.text = higher.ToString();
+        txtHighPoints.text = maxPointsReached.ToString();
 
         hatSkin = hat.GetComponent<SpriteRenderer>();
         beakSkin = beak.GetComponent<SpriteRenderer>();
         eyesSkin = eyes.GetComponent<SpriteRenderer>();
+
         Debug.Log(hatSkin);
 
-        GetBirdSkins();
+        GetBirdSkin();
 
     }
 
@@ -86,7 +84,6 @@ public class GameManager : MonoBehaviour
     {
         Player.onPlayerCollision -= StopMovement;
     }
-
 
     public void Start()
     {
@@ -99,12 +96,11 @@ public class GameManager : MonoBehaviour
         playerAlive = true;
         shownEndScreen = false;
 
-        higher = manager.GetMaxPoints();
+        maxPointsReached = ScorePrefs.GetMaxPointsReached();
 
         pointsInGame = 0;
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (playerAlive)
@@ -120,29 +116,28 @@ public class GameManager : MonoBehaviour
                 txtPointsOnGame.text = "";
                 txtPointsOnUI.text = pointsInGame.ToString();
 
-                pointsTotal += pointsInGame;
+                storedPoints += pointsInGame;
 
                 Debug.Log("Se ha terminado la partida con " + pointsInGame + " puntos.");
-                Debug.Log("Se tienen un total de " + pointsTotal + " puntos.");
+                Debug.Log("Se tienen un total de " + storedPoints + " puntos.");
                 
-                txtPointsTotal.text = GetTotalCurrency(pointsTotal);
+                txtPointsTotal.text = GetTotalCurrency(storedPoints);
 
-                if(HigherThanPrev(pointsInGame,higher))
+                if(HigherThanPrev(pointsInGame,maxPointsReached))
                 {
                     txtHighPoints.text = pointsInGame.ToString();
-                    manager.SetMaxPoints(pointsInGame);
+                    maxPointsReached = pointsInGame;
                 }
 
-                //Logger.SaveCurrencyInFile(pointsTotal, coinsTotal, manager.GetMaxPoints().points, manager.GetMaxPoints().coins, manager.GetCosmeticList());
+                SaveCurrency();
 
                 Manager.CheckPointAchievement(pointsInGame);
-                Manager.CheckAccumultarionAchievement(pointsTotal);
+                Manager.CheckAccumultarionAchievement(storedPoints);
 
                 LoadEndScreen(endScreen);
                 shownEndScreen = true;
             }
         }
-
     }
     void StopMovement() => playerAlive = false;
     void SetTubesPosition()
@@ -155,7 +150,7 @@ public class GameManager : MonoBehaviour
         }
         distanceToReset = obstacles[obstacles.Length - 1].transform.position.x + distanceBetweenObstacles;
     }
-    void SetNewObstaclePos(ref GameObject o, ref GameObject c, int actualPos)
+    void SetNewObstaclePos(ref GameObject o, int actualPos)
     {
         int lastObstacle = 0;
         switch (actualPos)
@@ -173,8 +168,7 @@ public class GameManager : MonoBehaviour
                 break;
         }
         o.transform.position = new Vector3(obstacles[lastObstacle].transform.position.x + distanceBetweenObstacles, Random.Range(minHeight, maxHeight));
-
-        Debug.Log("Obstaculo setteado en la altura " + o.transform.position);
+        
         justPassed[actualPos] = false;
         justChecked[actualPos] = false;
     }
@@ -188,7 +182,7 @@ public class GameManager : MonoBehaviour
             }
             if (obstacles[i].transform.position.x < LimitLeft)
             {
-                SetNewObstaclePos(ref obstacles[i], ref coins[i], i);
+                SetNewObstaclePos(ref obstacles[i], i);
 
                 Debug.Log("Reseteado el obstaculo " + i );
             }
@@ -264,53 +258,28 @@ public class GameManager : MonoBehaviour
     }
     public void BackToMenu()
     {
-        SendCurrency();
         Debug.Log("Volviendo al MENU. Desde el GAMEPLAY.");
         SceneManager.LoadScene("MainMenu");
     }
     public void EnterStore()
     {
-        SendCurrency();
-
         if (Application.platform == RuntimePlatform.Android)
         {
            // Logger.SendFilePath();
         }
 
-            Debug.Log("Yendo a la STORE, desde el GAMEPLAY");
+        Debug.Log("Yendo a la STORE, desde el GAMEPLAY");
         SceneManager.LoadScene("Store");
     }
-    private void SendCurrency()
+    private void SaveCurrency()
     {
-        manager.SetPoints(pointsTotal);
-
-        Debug.Log("int enviada al archivo en el celular.");
+        ScorePrefs.SaveActualScore(storedPoints, maxPointsReached);
     }
-    void GetBirdSkins()
+    void GetBirdSkin()
     {
-        for (int i = 0; i < manager.GetCosmeticList().Count; i++)
-        {
-            if (manager.GetCosmeticList()[i].IsEquipped())
-            {
-                switch (manager.GetCosmeticList()[i].cosmetic)
-                {
-                    case CosmeticType.Hat:
-                        hatSkin.sprite = manager.GetCosmeticList()[i].GetSprite();
-                        Debug.Log(hatSkin);
-                        break;
-                    case CosmeticType.Beak:
-                        beakSkin.sprite = manager.GetCosmeticList()[i].GetSprite();
-                        Debug.Log(beakSkin);
-                        break;
-                    case CosmeticType.Eyes:
-                        eyesSkin.sprite = manager.GetCosmeticList()[i].GetSprite();
-                        Debug.Log(eyesSkin);
-                        break;
-                    default:
-                        break;
-                }
-            }
-        }
+        hatSkin.sprite = Manager.GetHatSkins()[CosmeticPrefs.GetActualHatSkinID()].GetSprite();
+        beakSkin.sprite = Manager.GetBeakSkins()[CosmeticPrefs.GetActualBeakSkinID()].GetSprite();
+        eyesSkin.sprite = Manager.GetEyesSkins()[CosmeticPrefs.GetActualEyesSkinID()].GetSprite();
     }
     
 

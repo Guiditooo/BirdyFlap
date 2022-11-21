@@ -28,6 +28,33 @@ public struct CosmeticPrefs
         actualCosmetics.actualEyes = PlayerPrefs.HasKey(actualEyesKey) ? PlayerPrefs.GetInt(actualEyesKey) : 0;
         return actualCosmetics;
     }
+    public static int GetActualHatSkinID()
+    {
+        int actualHat;
+        actualHat = PlayerPrefs.HasKey(actualHatKey) ? PlayerPrefs.GetInt(actualHatKey) : 0;
+        return actualHat;
+    }
+    public static int GetActualBeakSkinID()
+    {
+        int actualBeak;
+        actualBeak = PlayerPrefs.HasKey(actualBeakKey) ? PlayerPrefs.GetInt(actualBeakKey) : 0;
+        return actualBeak;
+    }
+    public static int GetActualEyesSkinID()
+    {
+        int actualEyes;
+        actualEyes = PlayerPrefs.HasKey(actualEyesKey) ? PlayerPrefs.GetInt(actualEyesKey) : 0;
+        return actualEyes;
+    }
+
+    public static CosmeticPrefs GetDefaultSkin()
+    {
+        CosmeticPrefs defaultSkin;
+        defaultSkin.actualHat = 0;
+        defaultSkin.actualBeak = 0;
+        defaultSkin.actualEyes = 0;
+        return defaultSkin;
+    }
 
 
 }
@@ -46,12 +73,18 @@ public struct ScorePrefs
         PlayerPrefs.SetInt(actualMaxPointskKey, aMaxPoints);
     }
 
-    public static ScorePrefs GetActualCosmetics()
+    public static int GetMaxPointsReached()
     {
-        ScorePrefs actualScores;
-        actualScores.actualMaxPoints = PlayerPrefs.HasKey(actualTotalPointsKey) ? PlayerPrefs.GetInt(actualTotalPointsKey) : 0;
-        actualScores.actualTotalPoints = PlayerPrefs.HasKey(actualMaxPointskKey) ? PlayerPrefs.GetInt(actualMaxPointskKey) : 0;
-        return actualScores;
+        int maxPointsReached;
+        maxPointsReached = PlayerPrefs.HasKey(actualTotalPointsKey) ? PlayerPrefs.GetInt(actualTotalPointsKey) : 0;
+        return maxPointsReached;
+    }
+
+    public static int GetStoredPoints()
+    {
+        int storedPoints;
+        storedPoints = PlayerPrefs.HasKey(actualMaxPointskKey) ? PlayerPrefs.GetInt(actualMaxPointskKey) : 0;
+        return storedPoints;
     }
 
 }

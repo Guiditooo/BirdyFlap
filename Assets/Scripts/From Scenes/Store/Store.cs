@@ -40,7 +40,6 @@ public class Store : MonoBehaviour
         totalPoints = manager.GetPoints();
         //totalPoints = 9999;
         pointCurr.text = totalPoints.ToString();
-        cosmetics = manager.GetCosmeticList();
 
         hatSprite = hat.GetComponent<Image>();
         beakSprite = beak.GetComponent<Image>();
@@ -109,7 +108,7 @@ public class Store : MonoBehaviour
 
         Debug.Log("Mostrando Skin i="+index);
 
-        switch (cosmetics[index].cosmetic)
+        switch (cosmetics[index].GetCosmeticType())
         {
             case CosmeticType.Hat:
                 hatSprite.sprite = cosmetics[index].GetSprite();
@@ -138,11 +137,12 @@ public class Store : MonoBehaviour
     }
     void ResetSkin(int i)
     {
+        CosmeticPrefs defaultSkin = CosmeticPrefs.GetDefaultSkin();
         pricePointsCurr.SetActive(false);
         price.text = "";
-        hatSprite.sprite = cosmetics[Manager.GetDefaultSkin().bird.hat_color].GetSprite();
-        beakSprite.sprite = cosmetics[Manager.GetDefaultSkin().bird.beak].GetSprite();
-        eyesSprite.sprite = cosmetics[Manager.GetDefaultSkin().bird.eyes].GetSprite();
+        hatSprite.sprite = Manager.GetHatSkins()[defaultSkin.actualHat].GetSprite();
+        beakSprite.sprite = Manager.GetBeakSkins()[defaultSkin.actualBeak].GetSprite();
+        eyesSprite.sprite = Manager.GetEyesSkins()[defaultSkin.actualEyes].GetSprite();
     }
 
     public void BuySkin()
@@ -179,7 +179,7 @@ public class Store : MonoBehaviour
             {
                 for (int i = 0; i < cosmetics.Count; i++)
                 {
-                    if (cosmetics[i].cosmetic.Equals(cosmetics[actualIndex].cosmetic))
+                    if (cosmetics[i].GetCosmeticType().Equals(cosmetics[actualIndex].GetCosmeticType()))
                     {
                         cosmetics[i].UnEquip();
                     }

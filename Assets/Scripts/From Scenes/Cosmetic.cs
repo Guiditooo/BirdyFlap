@@ -18,7 +18,7 @@ public struct Price
 [System.Serializable]
 public class Cosmetic
 {
-    public CosmeticType cosmetic;
+    [SerializeField] private CosmeticType cosmeticType;
     [SerializeField] private Sprite sprite;
     [SerializeField] private Price price;
 
@@ -34,5 +34,6 @@ public class Cosmetic
     public bool IsBought() { return bought; }    
     public Price GetPrice() { return price; }    
     public Sprite GetSprite() { return sprite; }
+    public CosmeticType GetCosmeticType() => cosmeticType;
     
 }
