@@ -66,7 +66,7 @@ public class GameManager : MonoBehaviour
 
         storedPoints = ScorePrefs.GetStoredPoints();
 
-        //maxPointsReached = ScorePrefs.GetMaxPointsReached();
+        maxPointsReached = ScorePrefs.GetMaxPointsReached();
 
         txtHighPoints.text = maxPointsReached.ToString();
         
@@ -95,6 +95,7 @@ public class GameManager : MonoBehaviour
         shownEndScreen = false;
 
         maxPointsReached = ScorePrefs.GetMaxPointsReached();
+        txtHighPoints.text = maxPointsReached.ToString();
 
         pointsInGame = 0;
     }
@@ -261,11 +262,6 @@ public class GameManager : MonoBehaviour
     }
     public void EnterStore()
     {
-        if (Application.platform == RuntimePlatform.Android)
-        {
-           // Logger.SendFilePath();
-        }
-
         Debug.Log("Yendo a la STORE, desde el GAMEPLAY");
         SceneManager.LoadScene("Store");
     }

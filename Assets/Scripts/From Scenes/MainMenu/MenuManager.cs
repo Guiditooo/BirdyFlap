@@ -16,11 +16,8 @@ public class MenuManager : MonoBehaviour
     [SerializeField] private Image beakSkin;
     [SerializeField] private Image eyesSkin;
 
-    Manager manager;
-
     void Awake()
     {
-        manager = Manager.GetInstance();
         GetBirdSkin();
         Application.logMessageReceived += HandleLog;
     }
@@ -37,13 +34,12 @@ public class MenuManager : MonoBehaviour
             Logger.WriteInContextFile(logString);
     }
 
-    public float showSpeed = 1;
+    public float showSpeed = 2;
     public void Start()
     {
-        UnloadPanel(creditPanel);
-        UnloadPanel(logPanel);
-        if(mainMenuPanel.alpha!=1)
-            LoadPanel(mainMenuPanel);
+        if (mainMenuPanel.alpha != 1)
+            LoadMainMenuPanel();
+
     }
     public void LoadMainMenuPanel()
     {

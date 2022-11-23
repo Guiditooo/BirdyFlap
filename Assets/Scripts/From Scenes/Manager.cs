@@ -41,18 +41,16 @@ public class Manager : MonoBehaviour
     
     private static Manager instance = null;
 
-    private const int SkinHatColorCount = 5;
-    private const int SkinBeakColorCount = 2;
-    private const int SkinEyeColorCount = 2;
+    public const int SKIN_HAT_COLOR_COUNT = 5;
+    public const int SKIN_BEAK_COLOR_COUNT = 2;
+    public const int SKIN_EYES_COLOR_COUNT = 2;
 
     [SerializeField] private List<Cosmetic> skinList;
 
-    private static List<Cosmetic> hatSkinList = new List<Cosmetic>(SkinHatColorCount);
-    private static List<Cosmetic> beakSkinList = new List<Cosmetic>(SkinBeakColorCount);
-    private static List<Cosmetic> eyesSkinList = new List<Cosmetic>(SkinEyeColorCount);
+    private static List<Cosmetic> hatSkinList = new List<Cosmetic>(SKIN_HAT_COLOR_COUNT);
+    private static List<Cosmetic> beakSkinList = new List<Cosmetic>(SKIN_BEAK_COLOR_COUNT);
+    private static List<Cosmetic> eyesSkinList = new List<Cosmetic>(SKIN_EYES_COLOR_COUNT);
     private static List<Cosmetic> staticSkinList = new List<Cosmetic>();
-
-    
 
     public Skin skin;
 
@@ -83,44 +81,21 @@ public class Manager : MonoBehaviour
         {
             instance = this;
 
-            foreach (Cosmetic skin in skinList)
-            {
-                switch (skin.GetCosmeticType())
-                {
-                    case CosmeticType.Hat:
-                        hatSkinList.Add(skin);
-                        break;
-                    case CosmeticType.Beak:
-                        beakSkinList.Add(skin);
-                        break;
-                    case CosmeticType.Eyes:
-                        eyesSkinList.Add(skin);
-                        break;
-                    default:
-                        break;
-                }
-            }
-
             skin.tube = 0;
 
             staticSkinList = skinList;
 
+            ReloadSkins();
+
             DontDestroyOnLoad(gameObject);
         }
+
     }
 
-    public static Manager GetInstance()
-    {
-        return instance;
-    }
-    public int GetPoints()
-    {
-        return points;
-    }
-    public int GetMaxPoints()
-    {
-        return maxPointsEarned;
-    }
+    public static Manager GetInstance() => instance;
+    public int GetPoints() => points;
+    public int GetMaxPoints() => maxPointsEarned;
+    
     public void SetMaxPoints(int newMaxPoints)
     {
         Debug.Log("Puntos maximos hechos: " + newMaxPoints);
@@ -173,6 +148,45 @@ public class Manager : MonoBehaviour
         {
             Auth.UnlockAchievement(GPGSIds.achievement_gran_acaparador);
         }
+    }
+
+    public static void ReloadSkins()
+    {
+        hatSkinList.Clear();
+        beakSkinList.Clear();
+        eyesSkinList.Clear();
+
+        int eqHatID = 0;
+        int eqBeakID = 0;
+        int eqEyesID = 0;
+
+        CosmeticPrefs.LoadSkinsState();
+
+        foreach (Cosmetic skin in staticSkinList)
+        {
+            switch (skin.GetCosmeticType())
+            {
+                case CosmeticType.Hat:
+                    hatSkinList.Add(skin);
+                    if (skin.IsEquipped())
+                        eqHatID = hatSkinList.Count - 1;
+                    break;
+                case CosmeticType.Beak:
+                    beakSkinList.Add(skin);
+                    if (skin.IsEquipped())
+                        eqBeakID = beakSkinList.Count - 1;
+                    break;
+                case CosmeticType.Eyes:
+                    eyesSkinList.Add(skin);
+                    if (skin.IsEquipped())
+                        eqEyesID = eyesSkinList.Count - 1;
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        CosmeticPrefs.SaveEquippedCosmetics(eqHatID, eqBeakID, eqEyesID);
     }
 
 }

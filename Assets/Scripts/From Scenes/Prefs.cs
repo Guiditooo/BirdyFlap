@@ -14,7 +14,8 @@ public struct CosmeticPrefs
     private static string equippedEyesKey = "aEyes";
     private static string skinStatesKey = "aSkins";
 
-    private static string defaultSkinsState = "EAAAAEAEA";
+    private static string defaultSkinsWord = "EAAAAEAEA";
+    private static string unlockedAllSkinsWord = "EBBBBEBEB";
 
 
     public int actualHat;
@@ -80,8 +81,10 @@ public struct CosmeticPrefs
             }
             wordToSave += nextLetter;
         }
-
         PlayerPrefs.SetString(skinStatesKey, wordToSave);
+
+        Manager.ReloadSkins();
+
     }
 
     public static void LoadSkinsState()
@@ -95,7 +98,7 @@ public struct CosmeticPrefs
         }
         else
         {
-            wordToLoad = defaultSkinsState;
+            wordToLoad = defaultSkinsWord;
         }
 
         for (int i = 0; i < Manager.GetSkinList().Count; i++)
@@ -118,6 +121,35 @@ public struct CosmeticPrefs
 
     }
 
+    public static void EraseSkinsData()
+    {
+        PlayerPrefs.SetString(skinStatesKey, defaultSkinsWord);
+        LoadSkinsState();
+    }
+
+    public static void UnlockAllSkins()
+    {
+        string wordToLoad = unlockedAllSkinsWord;
+
+        for (int i = 0; i < Manager.GetSkinList().Count; i++)
+        {
+
+            Manager.GetSkinList()[i].SetIfBougth(false);
+            Manager.GetSkinList()[i].SetIfEquiped(false);
+
+            if (wordToLoad[i].ToString() == BOUGHT_LETTER)
+            {
+                Manager.GetSkinList()[i].SetIfBougth(true);
+            }
+            if (wordToLoad[i].ToString() == EQUIPPED_LETTER)
+            {
+                Manager.GetSkinList()[i].SetIfEquiped(true);
+            }
+
+        }
+
+
+    }
 
 }
 
@@ -143,15 +175,21 @@ public struct ScorePrefs
     public static int GetMaxPointsReached()
     {
         int maxPointsReached;
-        maxPointsReached = PlayerPrefs.HasKey(actualTotalPointsKey) ? PlayerPrefs.GetInt(actualTotalPointsKey) : 0;
+        maxPointsReached = PlayerPrefs.HasKey(actualMaxPointskKey) ? PlayerPrefs.GetInt(actualMaxPointskKey) : 0;
         return maxPointsReached;
     }
 
     public static int GetStoredPoints()
     {
         int storedPoints;
-        storedPoints = PlayerPrefs.HasKey(actualMaxPointskKey) ? PlayerPrefs.GetInt(actualMaxPointskKey) : 0;
+        storedPoints = PlayerPrefs.HasKey(actualTotalPointsKey) ? PlayerPrefs.GetInt(actualTotalPointsKey) : 0;
         return storedPoints;
+    }
+
+    public static void EraseScoreData()
+    {
+        PlayerPrefs.SetInt(actualTotalPointsKey, 0);
+        PlayerPrefs.SetInt(actualMaxPointskKey, 0);
     }
 
 }
