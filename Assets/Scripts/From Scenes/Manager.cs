@@ -118,36 +118,46 @@ public class Manager : MonoBehaviour
     public static List<Cosmetic> GetEyesSkins() => eyesSkinList;
     public static List<Cosmetic> GetSkinList() => staticSkinList;
 
+    private static string myAchievement1 = GPGSIds.achievement_si;
+    private static string myAchievement2 = GPGSIds.achievement_eso_es;
+    private static string myAchievement3 = GPGSIds.achievement_vamos_tu_puedes;
+    private static string myAchievement4 = GPGSIds.achievement_lo_has_conseguido_75_puntos;
+    private static string myAchievement5 = GPGSIds.achievement_acaparador;
+    private static string myAchievement6 = GPGSIds.achievement_gran_acaparador;
+
     public static void CheckPointAchievement(int realizedPoints)
     {
-        //if (realizedPoints >= 20)
-        //{
-        //    Auth.UnlockAchievement(GPGSIds.achievement_si);
-        //}
-        //if (realizedPoints >= 35)
-        //{
-        //    Auth.UnlockAchievement(GPGSIds.achievement_eso_es);
-        //}
-        //if (realizedPoints >= 50)
-        //{
-        //    Auth.UnlockAchievement(GPGSIds.achievement_vamos_tu_puedes);
-        //}
-        //if (realizedPoints >= 75)
-        //{
-        //    Auth.UnlockAchievement(GPGSIds.achievement_lo_has_conseguido_75_puntos);
-        //}
+        
+
+
+        if (realizedPoints >= 20)
+        {
+            Auth.UnlockAchievement(myAchievement1);
+        }
+        if (realizedPoints >= 35)
+        {
+            Auth.UnlockAchievement(myAchievement2);
+        }
+        if (realizedPoints >= 50)
+        {
+            Auth.UnlockAchievement(myAchievement3);
+        }
+        if (realizedPoints >= 75)
+        {
+            Auth.UnlockAchievement(myAchievement4);
+        }
     }
 
     public static void CheckAccumultarionAchievement(int totalAccumulated)
     {
-        //if (totalAccumulated >= 100)
-        //{
-        //    Auth.UnlockAchievement(GPGSIds.achievement_acaparador);
-        //}
-        //if (totalAccumulated >= 500)
-        //{
-        //    Auth.UnlockAchievement(GPGSIds.achievement_gran_acaparador);
-        //}
+        if (totalAccumulated >= 100)
+        {
+            Auth.UnlockAchievement(myAchievement5);
+        }
+        if (totalAccumulated >= 500)
+        {
+            Auth.UnlockAchievement(myAchievement6);
+        }
     }
 
     public static void ReloadSkins()
