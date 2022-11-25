@@ -31,7 +31,9 @@ public class MenuManager : MonoBehaviour
     {
 
         if (Application.platform == RuntimePlatform.Android)
-            Logger.WriteInContextFile(logString);
+        {
+            //Logger.WriteInContextFile(logString);
+        }
     }
 
     public float showSpeed = 2;

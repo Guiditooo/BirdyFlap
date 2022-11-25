@@ -32,6 +32,7 @@ public class LogManager : MonoBehaviour
     public void ClearLogs()
     {
         logText.text = "";
+        //Logger.CleanLog();
     }
 
     public void GiveCurrency()
@@ -42,7 +43,10 @@ public class LogManager : MonoBehaviour
 
         ScorePrefs.SaveActualScore(storedPoints, actualMaxPoints);
 
-        logText.text += "Added " + addedAmount + " jumps to currency.\n";
+        string msg = "Added " + addedAmount + " jumps to currency.\n";
+
+        logText.text += msg;
+        //Logger.SendLog(msg);
     }
 
 }

@@ -40,6 +40,11 @@ public class Logger
             init();
         }
 
+        if (context == null)
+        {
+            initContext();
+        }
+
         LoggerInstance.Call("ShowMessage", msg);
     }
 
