@@ -103,7 +103,7 @@ public class Store : MonoBehaviour
     {
         actualIndex = index;
 
-        Debug.Log("Mostrando Skin i="+index);
+        Logger.SendLog("Mostrando Skin i="+index);
 
         switch (cosmetics[index].GetCosmeticType())
         {
@@ -156,7 +156,7 @@ public class Store : MonoBehaviour
                     ScorePrefs.SaveActualTotalPoints(totalPoints);
                     CosmeticPrefs.SaveSkinsState(cosmetics);
                     pointCurr.text = totalPoints.ToString();
-                    Debug.Log("Comprado item " + actualIndex + " a " + cosmetics[actualIndex].GetPrice().quantity + " puntos.");
+                    Logger.SendLog("Comprado item " + actualIndex + " a " + cosmetics[actualIndex].GetPrice().quantity + " puntos.");
 
                 }
             }
@@ -165,7 +165,7 @@ public class Store : MonoBehaviour
 
                 pricePointsCurr.SetActive(false);
                 price.text = "BOUGHT";
-                Debug.Log("Item " + actualIndex + " cambia su estado a 'COMPRADO'");
+                Logger.SendLog("Item " + actualIndex + " cambia su estado a 'COMPRADO'");
 
             }
         } 
@@ -188,7 +188,7 @@ public class Store : MonoBehaviour
                 if (cosmetics[actualIndex].IsEquipped())
                 {
                     price.text = "EQUIPPED";
-                    Debug.Log("Equipado el item " + actualIndex);
+                    Logger.SendLog("Equipado el item " + actualIndex);
                 }
             }
         }

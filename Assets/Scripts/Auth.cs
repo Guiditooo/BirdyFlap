@@ -13,21 +13,18 @@ public class Auth : MonoBehaviour
     }
     private void Init()
     {
-        Debug.LogError("\nIntento de log in\n");
-        //Logger.SendLog("\nLogged in successfully\n");
+        Logger.SendLog("\nLogged in successfully\n");
         PlayGamesPlatform.Instance.Authenticate(success =>
         {
             
             Debug.LogError("\n"+success+"\n");
             if (success == SignInStatus.Success)
             {
-                Debug.LogError("\nLogged in successfully\n");
-                //Logger.SendLog("\nLogged in successfully\n");
+                Logger.SendLog("\nLogged in successfully\n");
             }
             else
             {
-                Debug.LogError("\nLogin Failed\n");
-                //Logger.SendLog("\nLogin Failed\n");
+                Logger.SendLog("\nLogin Failed\n");
             }
         });
 
@@ -40,7 +37,7 @@ public class Auth : MonoBehaviour
             if (PlayGamesPlatform.Instance.IsAuthenticated())
             {
                 PlayGamesPlatform.Instance.ShowAchievementsUI();
-                //Logger.SendLog("\nMostrando logros\n");
+                Logger.SendLog("\nMostrando logros\n");
             }
         }
     }
@@ -53,7 +50,7 @@ public class Auth : MonoBehaviour
             if (PlayGamesPlatform.Instance.IsAuthenticated())
             {
                 PlayGamesPlatform.Instance.ReportProgress(a, 100f, success => { });
-                //Logger.SendLog("\nLogro desbloqueado!\n");
+                Logger.SendLog("\nLogro desbloqueado!\n");
             }
         }
     }

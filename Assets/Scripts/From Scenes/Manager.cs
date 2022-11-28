@@ -60,7 +60,7 @@ public class Manager : MonoBehaviour
     public static Skin GetDefaultSkin()
     {
 
-        Debug.Log("Entregando las skins por default 0 - 5 - 7.");
+        Logger.SendLog("Entregando las skins por default 0 - 5 - 7.");
 
         Skin def = new Skin();
 
@@ -98,13 +98,13 @@ public class Manager : MonoBehaviour
     
     public void SetMaxPoints(int newMaxPoints)
     {
-        Debug.Log("Puntos maximos hechos: " + newMaxPoints);
+        Logger.SendLog("Puntos maximos hechos: " + newMaxPoints);
         maxPointsEarned = points;
     }
 
     public void SetPoints(int newPoints)
     {
-        Debug.Log("Ahora se tienen " + newPoints + " puntos.");
+        Logger.SendLog("Ahora se tienen " + newPoints + " puntos.");
         points = newPoints;
     }
 

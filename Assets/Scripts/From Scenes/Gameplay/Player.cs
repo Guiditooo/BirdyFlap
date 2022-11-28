@@ -19,7 +19,6 @@ public class Player : MonoBehaviour
     private Vector3 pos;
 
     public static Action onPlayerCollision;
-    public static Action onGrabCoin;
 
     void Awake()
     {
@@ -34,12 +33,7 @@ public class Player : MonoBehaviour
             onPlayerCollision?.Invoke();
             rb.constraints = RigidbodyConstraints2D.FreezeAll;
 
-            Debug.Log("Colision con un obstaculo.");
-        }
-        if(collision.gameObject.layer == 9)
-        {
-            onGrabCoin?.Invoke();
-            Debug.Log("Colision con una moneda");
+            Logger.SendLog("Colision con un obstaculo.");
         }
     }
     void Update()
@@ -55,18 +49,15 @@ public class Player : MonoBehaviour
         Vector2 force = new Vector2(0, jumpForce);
         rb.velocity = Vector2.zero;
         rb.AddForce(force, ForceMode2D.Impulse);
-        //Debug.Log("El personaje salta");
     }
     void CheckInputs()
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            //Debug.Log("Salto con espacio");
             Jump();
         }
         if (Input.GetKeyDown(KeyCode.Mouse0))
         {
-            //Debug.Log("Salto con clic izquierdo");
             Jump();
         }
     }
@@ -100,6 +91,6 @@ public class Player : MonoBehaviour
         alive = true;
         transform.position = pos;
 
-        Debug.Log("Reseteo de personaje.");
+        Logger.SendLog("Reseteo de personaje.");
     }
 }

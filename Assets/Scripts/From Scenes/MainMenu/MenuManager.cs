@@ -19,22 +19,8 @@ public class MenuManager : MonoBehaviour
     void Awake()
     {
         GetBirdSkin();
-        Application.logMessageReceived += HandleLog;
     }
 
-    private void OnDestroy()
-    {
-        Application.logMessageReceived -= HandleLog;
-    }
-
-    void HandleLog(string logString, string stackTrace, LogType type)
-    {
-
-        if (Application.platform == RuntimePlatform.Android)
-        {
-            //Logger.WriteInContextFile(logString);
-        }
-    }
 
     public float showSpeed = 2;
     public void Start()
@@ -49,26 +35,26 @@ public class MenuManager : MonoBehaviour
         UnloadPanel(creditPanel);
         UnloadPanel(logPanel);
         LoadPanel(mainMenuPanel);
-        Debug.Log("Inicia el panel de menu");
+        Logger.SendLog("Inicia el panel de menu");
     }
     public void LoadCreditsPanel()
     {
         StopAllCoroutines();
         UnloadPanel(mainMenuPanel);
         LoadPanel(creditPanel);
-        Debug.Log("Inicia el panel de creditos");
+        Logger.SendLog("Inicia el panel de creditos");
     }
     public void LoadLogsPanel()
     {
         StopAllCoroutines();
         UnloadPanel(mainMenuPanel);
         LoadPanel(logPanel);
-        Debug.Log("Inicia el panel de logs");
+        Logger.SendLog("Inicia el panel de logs");
     }
 
     public void LoadStoreScene()
     {
-        Debug.Log("Deja el menu, y se va a la tienda");
+        Logger.SendLog("Deja el menu, y se va a la tienda");
         SceneManager.LoadScene("Store");
     }
     private void UnloadPanel(CanvasGroup panel)
@@ -110,12 +96,12 @@ public class MenuManager : MonoBehaviour
     }
     public void LoadGame(string scene)
     {
-        Debug.Log("Deja el menu, y se va al juego"); 
+        Logger.SendLog("Deja el menu, y se va al juego"); 
         SceneManager.LoadScene(scene);
     }
     public void ExitGame()
     {
-        Debug.Log("Saliendo del juego.");
+        Logger.SendLog("Saliendo del juego.");
         Application.Quit();
     }
     void GetBirdSkin()

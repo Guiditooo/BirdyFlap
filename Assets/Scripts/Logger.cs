@@ -1,27 +1,39 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Logger
 {
-    const string PACK_NAME = "com.mobile.unity";
+    private const string PACK_NAME = "com.mobile.myplugin";
 
-    const string LOGGER_CLASS_NAME = "MyPlugin";
+    private const string LOGGER_CLASS_NAME = "LoggerClass";
 
-    static AndroidJavaClass LoggerClass = null;
+    private static AndroidJavaClass LoggerClass = null;
+    private static AndroidJavaObject LoggerInstance = null;
 
-    static AndroidJavaObject LoggerInstance = null;
-
-    static AndroidJavaClass unityPlayer = null;
-    static AndroidJavaObject activity = null;
-    static AndroidJavaObject context = null;
+    private static AndroidJavaClass unityPlayer = null;
+    private static AndroidJavaObject activity = null;
+    private static AndroidJavaObject context = null;
 
     static void init()
     {
         if (Application.platform == RuntimePlatform.Android)
         {
-            LoggerClass = new AndroidJavaClass(PACK_NAME + "." + LOGGER_CLASS_NAME);
-            LoggerInstance = LoggerClass.CallStatic<AndroidJavaObject>("GetInstance");
+            Debug.LogWarning("\nAntes de crear contexto.\n");
+
+            if(context == null)
+                initContext();
+
+            Debug.LogWarning("\nAntes de crear el objeto de la clase.\n");
+
+            if (LoggerClass == null)
+                LoggerClass = new AndroidJavaClass(PACK_NAME + "." + LOGGER_CLASS_NAME);
+
+            Debug.LogWarning("\nAntes de obtener la instancia de la clase Logger.\n");
+
+            if (LoggerInstance == null)
+            {
+                LoggerInstance = LoggerClass.CallStatic<AndroidJavaObject>("GetInstance", context);
+                SendLog("Logger Instance Successfully Created!\n");
+            }
         }
     }
     static void initContext()
@@ -35,7 +47,7 @@ public class Logger
     }
     public static void SendLog(string msg)
     {
-        if (LoggerInstance == null)
+        if (LoggerInstance == null && LoggerClass == null)
         {
             init();
         }
@@ -46,9 +58,10 @@ public class Logger
         }
 
         LoggerInstance.Call("ShowMessage", msg);
+        Debug.Log(msg);
     }
 
-    public static void WriteInContextFile(string content)
+    public static void WriteInFile(string content)
     {
 
         if (LoggerInstance == null)
@@ -61,9 +74,9 @@ public class Logger
             initContext();
         }
 
-        LoggerInstance?.Call("addToFile", content, context);
+        LoggerInstance?.Call("AddToFile", content);
 
-        Debug.Log("Creado un nuevo Archivo o se actualizo uno viejo.\n");
+        SendLog("Creado un nuevo Archivo o se actualizo uno viejo.\n");
 
     }
 
@@ -79,9 +92,31 @@ public class Logger
             initContext();
         }
 
-        LoggerInstance?.Call("cleanFile", context);
+        LoggerInstance?.Call("ClearFile");
 
-        Debug.Log("Archivos Reseteados.\n");
+        SendLog("Archivos Reseteados.\n");
+
+    }
+
+    public static string ReadLogFile()
+    {
+        string logText = "";
+
+        if (LoggerInstance == null)
+        {
+            init();
+        }
+
+        if (context == null)
+        {
+            initContext();
+        }
+
+        logText = LoggerInstance.Get<string>("ReadFromFile");
+
+        SendLog("Reading Log File");
+
+        return logText;
     }
 
 }

@@ -112,13 +112,16 @@ public class GameManager : MonoBehaviour
         {
             if(!shownEndScreen)
             {
+
+                Vibrator.Vibrate(180);
+
                 txtPointsOnGame.text = "";
                 txtPointsOnUI.text = pointsInGame.ToString();
 
                  storedPoints += pointsInGame;
 
-                Debug.Log("Se ha terminado la partida con " + pointsInGame + " puntos.");
-                Debug.Log("Se tienen un total de " + storedPoints + " puntos.");
+                Logger.SendLog("Se ha terminado la partida con " + pointsInGame + " puntos.");
+                Logger.SendLog("Se tienen un total de " + storedPoints + " puntos.");
                 
                 txtPointsTotal.text = GetTotalCurrency(storedPoints);
 
@@ -126,6 +129,7 @@ public class GameManager : MonoBehaviour
                 {
                     txtHighPoints.text = pointsInGame.ToString();
                     maxPointsReached = pointsInGame;
+                    Logger.SendLog("New HighScore: " + pointsInGame);
                 }
 
                 SaveCurrency();
@@ -183,7 +187,6 @@ public class GameManager : MonoBehaviour
             {
                 SetNewObstaclePos(ref obstacles[i], i);
 
-                Debug.Log("Reseteado el obstaculo " + i );
             }
         }
     }
@@ -197,7 +200,6 @@ public class GameManager : MonoBehaviour
                 {
                     pointsInGame++;
                     txtPointsOnGame.text = pointsInGame.ToString();
-                    Debug.Log("Contador de puntos: " + pointsInGame);
                     justChecked[i] = true;
                 }
             }
@@ -218,11 +220,6 @@ public class GameManager : MonoBehaviour
     }
     bool HigherThanPrev(int actual, int prev)
     {
-        if(actual>prev)
-            Debug.Log("El puntaje alcanzado es mayor que el maximo alcanzado antes.");
-        else
-            Debug.Log("El puntaje anterior es el maximo alcanzado.");
-
         return actual > prev;
     }
     void LoadEndScreen(CanvasGroup panel)
@@ -257,12 +254,12 @@ public class GameManager : MonoBehaviour
     }
     public void BackToMenu()
     {
-        Debug.Log("Volviendo al MENU. Desde el GAMEPLAY.");
+        Logger.SendLog("Volviendo al MENU. Desde el GAMEPLAY.");
         SceneManager.LoadScene("MainMenu");
     }
     public void EnterStore()
     {
-        Debug.Log("Yendo a la STORE, desde el GAMEPLAY");
+        Logger.SendLog("Yendo a la STORE, desde el GAMEPLAY");
         SceneManager.LoadScene("Store");
     }
     private void SaveCurrency()

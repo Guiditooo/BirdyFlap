@@ -5,7 +5,7 @@ using TMPro;
 
 public class LogManager : MonoBehaviour
 {
-    [SerializeField] private TMP_InputField logText;
+    [SerializeField] private TMP_Text logText;
     public void HardReset()
     {
         ScorePrefs.EraseScoreData();
