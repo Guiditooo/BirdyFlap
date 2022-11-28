@@ -32,7 +32,6 @@ public class Logger
             if (LoggerInstance == null)
             {
                 LoggerInstance = LoggerClass.CallStatic<AndroidJavaObject>("GetInstance", context);
-                SendLog("Logger Instance Successfully Created!\n");
             }
         }
     }
@@ -94,7 +93,7 @@ public class Logger
 
         LoggerInstance?.Call("ClearFile");
 
-        SendLog("Archivos Reseteados.\n");
+        SendLog("Archivo Reseteado.\n");
 
     }
 
@@ -114,7 +113,7 @@ public class Logger
 
         logText = LoggerInstance.Get<string>("ReadFromFile");
 
-        SendLog("Reading Log File");
+        SendLog("Leyendo el archivo.");
 
         return logText;
     }

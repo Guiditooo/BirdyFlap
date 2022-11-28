@@ -30,13 +30,22 @@ public class LoggerClass
     public static OutputStreamWriter saveFileReader;
     static public String FILE_NAME = "Logs.txt";
 
-    public void ShowMessage(String msg) { Log.i(TAG, msg); } //FUNCION
+    public void DebugMessage(String msg)
+    {
+        Log.i(TAG, msg);
+    }
+
+    public void ShowMessage(String msg)
+    {
+        DebugMessage(msg);
+        AddToFile(msg);
+    } //FUNCION
 
     public void AddToFile(String data)
     {
         CreateFile();
         WriteToFile(data);
-        ShowMessage("Lo que hay en el Log es: " + ReadFromFile());
+        //ShowMessage("Lo que hay en el Log es: " + ReadFromFile());
         CloseFile();
     }
 
@@ -45,11 +54,11 @@ public class LoggerClass
         try
         {
             logReader = new OutputStreamWriter(context.openFileOutput(FILE_NAME, Context.MODE_APPEND));
-            ShowMessage("Se creó el Log");
+            DebugMessage("Se creó el Log");
         }
         catch (IOException e)
         {
-            ShowMessage("No se creó el Log");
+            DebugMessage("No se creó el Log");
         }
     }
 
@@ -61,7 +70,7 @@ public class LoggerClass
         }
         catch (IOException e)
         {
-            ShowMessage("No se pudo escribir en el Log :c");
+            DebugMessage("No se pudo escribir en el Log :c");
         }
     }
 
@@ -92,11 +101,11 @@ public class LoggerClass
         }
         catch (FileNotFoundException e)
         {
-            ShowMessage("El Log no existe");
+            DebugMessage("El Log no existe");
         }
         catch (IOException e)
         {
-            ShowMessage("Perdon Rey, pero no puedo leer el Log");
+            DebugMessage("Perdon Rey, pero no puedo leer el Log");
         }
 
         return ret;
@@ -110,7 +119,7 @@ public class LoggerClass
         }
         catch (IOException e)
         {
-            ShowMessage("No se pudo ... cerrar el Log?");
+            DebugMessage("No se pudo ... cerrar el Log?");
         }
     }
 
