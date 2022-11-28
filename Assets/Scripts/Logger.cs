@@ -36,7 +36,6 @@ public class Logger
 
             if (LoggerInstance == null)
             {
-                Debug.Log("Contexto: "+context.ToString());
                 LoggerInstance = LoggerClass.CallStatic<AndroidJavaObject>("GetInstance", context);
             }
 

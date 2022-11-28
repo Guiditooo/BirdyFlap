@@ -54,7 +54,7 @@ public class LoggerClass
         try
         {
             logReader = new OutputStreamWriter(context.openFileOutput(FILE_NAME, Context.MODE_APPEND));
-            DebugMessage("Se creó el Log");
+            //DebugMessage("Se creó el Log");
         }
         catch (IOException e)
         {
