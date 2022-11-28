@@ -13,11 +13,8 @@ public class Auth : MonoBehaviour
     }
     private void Init()
     {
-        Logger.SendLog("\nLogged in successfully\n");
         PlayGamesPlatform.Instance.Authenticate(success =>
         {
-            
-            Debug.LogError("\n"+success+"\n");
             if (success == SignInStatus.Success)
             {
                 Logger.SendLog("\nLogged in successfully\n");

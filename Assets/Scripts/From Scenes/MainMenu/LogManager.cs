@@ -10,8 +10,8 @@ public class LogManager : MonoBehaviour
     {
         ScorePrefs.EraseScoreData();
         CosmeticPrefs.EraseSkinsData();
-
-        logText.text += "Game Reseted!\n";
+        Logger.SendLog("Game Hard Reseted!\n");
+        logText.text += "Game Hard Reseted!\n";
     }
 
     public void SkinsReset()
@@ -32,7 +32,8 @@ public class LogManager : MonoBehaviour
     public void ClearLogs()
     {
         logText.text = "";
-        //Logger.CleanLog();
+        Logger.CleanLog();
+        Logger.SendLog("Cleared Log.\n");
     }
 
     public void GiveCurrency()
@@ -43,10 +44,10 @@ public class LogManager : MonoBehaviour
 
         ScorePrefs.SaveActualScore(storedPoints, actualMaxPoints);
 
-        string msg = "Added " + addedAmount + " jumps to currency.\n";
+        string msg = "Added " + addedAmount + " jumps to currency.(" + storedPoints + ")\n";
 
         logText.text += msg;
-        //Logger.SendLog(msg);
+        Logger.SendLog(msg);
     }
 
 }
