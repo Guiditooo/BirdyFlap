@@ -15,10 +15,10 @@ public class LoggerClass
 {
     public static final String TAG = "Tello>>>";
 
-    private LoggerClass() { ShowMessage("Created plugin object"); } //CONSTRUCTOR
+    private LoggerClass() { DebugMessage("Created plugin object"); } //CONSTRUCTOR
 
     public static final LoggerClass ourInstance = new LoggerClass();
-    public static Context context;
+    public static Context context = null;
 
     public static LoggerClass GetInstance(Context newContext)
     {

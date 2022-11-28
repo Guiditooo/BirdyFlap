@@ -6,11 +6,11 @@ using System;
 public class Auth : MonoBehaviour
 {
 
-    void Start()
-    {
-        if (Application.platform == RuntimePlatform.Android)
-            Init();
-    }
+    //void Start()
+    //{
+    //    if (Application.platform == RuntimePlatform.Android)
+    //        Init();
+    //}
     private void Init()
     {
         PlayGamesPlatform.Instance.Authenticate(success =>

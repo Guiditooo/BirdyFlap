@@ -2,6 +2,7 @@
 
 public class Logger
 {
+    
     private const string PACK_NAME = "com.mobile.myplugin";
 
     private const string LOGGER_CLASS_NAME = "LoggerClass";
@@ -17,22 +18,30 @@ public class Logger
     {
         if (Application.platform == RuntimePlatform.Android)
         {
-            Debug.LogWarning("\nAntes de crear contexto.\n");
-
-            if(context == null)
-                initContext();
-
             Debug.LogWarning("\nAntes de crear el objeto de la clase.\n");
 
             if (LoggerClass == null)
+            {
                 LoggerClass = new AndroidJavaClass(PACK_NAME + "." + LOGGER_CLASS_NAME);
+            }
+
+            Debug.LogWarning("\nAntes de crear contexto.\n");
+
+            if (context == null)
+            {
+                initContext();
+            }
 
             Debug.LogWarning("\nAntes de obtener la instancia de la clase Logger.\n");
 
             if (LoggerInstance == null)
             {
+                Debug.Log("Contexto: "+context.ToString());
                 LoggerInstance = LoggerClass.CallStatic<AndroidJavaObject>("GetInstance", context);
             }
+
+            Debug.LogWarning("\nDespues de obtener la instancia de la clase Logger.\n");
+
         }
     }
     static void initContext()
@@ -46,14 +55,10 @@ public class Logger
     }
     public static void SendLog(string msg)
     {
-        if (LoggerInstance == null && LoggerClass == null)
+
+        if (LoggerInstance == null || LoggerClass == null || context == null)
         {
             init();
-        }
-
-        if (context == null)
-        {
-            initContext();
         }
 
         LoggerInstance.Call("ShowMessage", msg);
@@ -111,7 +116,7 @@ public class Logger
             initContext();
         }
 
-        logText = LoggerInstance.Get<string>("ReadFromFile");
+        logText = LoggerInstance.Call<string>("ReadFromFile");
 
         SendLog("Leyendo el archivo.");
 

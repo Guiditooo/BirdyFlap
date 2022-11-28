@@ -9,7 +9,7 @@ public class LogController : MonoBehaviour
 
     private void Start()
     {
-        logText.text = Logger.ReadLogFile();
+        //logText.text = Logger.ReadLogFile();
     }
 
 }
