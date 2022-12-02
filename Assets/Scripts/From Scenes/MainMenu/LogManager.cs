@@ -10,8 +10,8 @@ public class LogManager : MonoBehaviour
     {
         ScorePrefs.EraseScoreData();
         CosmeticPrefs.EraseSkinsData();
-        Logger.SendLog("Game Hard Reseted!\n");
-        logText.text += "Game Hard Reseted!\n";
+        Logger.SendLog("Game Hard Reseted!");
+        logText.text += "Game Hard Reseted!";
     }
 
     public void SkinsReset()
@@ -33,7 +33,7 @@ public class LogManager : MonoBehaviour
     {
         logText.text = "";
         Logger.CleanLog();
-        Logger.SendLog("Cleared Log.\n");
+        Logger.SendLog("Cleared Log.");
     }
 
     public void GiveCurrency()

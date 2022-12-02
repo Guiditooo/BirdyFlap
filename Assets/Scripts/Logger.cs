@@ -117,7 +117,7 @@ public class Logger
 
         logText = LoggerInstance.Call<string>("ReadFromFile");
 
-        SendLog("Leyendo el archivo.");
+        SendLog("Leyendo el archivo.\n");
 
         return logText;
     }

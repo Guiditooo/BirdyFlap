@@ -33,7 +33,7 @@ public class Player : MonoBehaviour
             onPlayerCollision?.Invoke();
             rb.constraints = RigidbodyConstraints2D.FreezeAll;
 
-            Logger.SendLog("Colision con un obstaculo.");
+            Logger.SendLog("Colision con un obstaculo.\n");
         }
     }
     void Update()
@@ -91,6 +91,6 @@ public class Player : MonoBehaviour
         alive = true;
         transform.position = pos;
 
-        Logger.SendLog("Reseteo de personaje.");
+        Logger.SendLog("Reseteo de personaje.\n");
     }
 }

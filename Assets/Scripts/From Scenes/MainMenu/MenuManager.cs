@@ -35,26 +35,26 @@ public class MenuManager : MonoBehaviour
         UnloadPanel(creditPanel);
         UnloadPanel(logPanel);
         LoadPanel(mainMenuPanel);
-        Logger.SendLog("Inicia el panel de menu");
+        Logger.SendLog("Inicia el panel de menu.\n");
     }
     public void LoadCreditsPanel()
     {
         StopAllCoroutines();
         UnloadPanel(mainMenuPanel);
         LoadPanel(creditPanel);
-        Logger.SendLog("Inicia el panel de creditos");
+        Logger.SendLog("Inicia el panel de creditos.\n");
     }
     public void LoadLogsPanel()
     {
         StopAllCoroutines();
         UnloadPanel(mainMenuPanel);
         LoadPanel(logPanel);
-        Logger.SendLog("Inicia el panel de logs");
+        Logger.SendLog("Inicia el panel de logs.\n");
     }
 
     public void LoadStoreScene()
     {
-        Logger.SendLog("Deja el menu, y se va a la tienda");
+        Logger.SendLog("Deja el menu, y se va a la tienda.\n");
         SceneManager.LoadScene("Store");
     }
     private void UnloadPanel(CanvasGroup panel)
@@ -96,12 +96,12 @@ public class MenuManager : MonoBehaviour
     }
     public void LoadGame(string scene)
     {
-        Logger.SendLog("Deja el menu, y se va al juego"); 
+        Logger.SendLog("Deja el menu, y se va al juego.\n"); 
         SceneManager.LoadScene(scene);
     }
     public void ExitGame()
     {
-        Logger.SendLog("Saliendo del juego.");
+        Logger.SendLog("Saliendo del juego.\n");
         Application.Quit();
     }
     void GetBirdSkin()

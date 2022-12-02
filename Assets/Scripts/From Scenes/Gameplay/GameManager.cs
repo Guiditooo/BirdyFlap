@@ -120,8 +120,8 @@ public class GameManager : MonoBehaviour
 
                  storedPoints += pointsInGame;
 
-                Logger.SendLog("Se ha terminado la partida con " + pointsInGame + " puntos.");
-                Logger.SendLog("Se tienen un total de " + storedPoints + " puntos.");
+                Logger.SendLog("Se ha terminado la partida con " + pointsInGame + " puntos.\n");
+                Logger.SendLog("Se tienen un total de " + storedPoints + " puntos.\n");
                 
                 txtPointsTotal.text = GetTotalCurrency(storedPoints);
 
@@ -129,7 +129,7 @@ public class GameManager : MonoBehaviour
                 {
                     txtHighPoints.text = pointsInGame.ToString();
                     maxPointsReached = pointsInGame;
-                    Logger.SendLog("New HighScore: " + pointsInGame);
+                    Logger.SendLog("New HighScore: " + pointsInGame + ".\n");
                 }
 
                 SaveCurrency();
@@ -254,12 +254,12 @@ public class GameManager : MonoBehaviour
     }
     public void BackToMenu()
     {
-        Logger.SendLog("Volviendo al MENU. Desde el GAMEPLAY.");
+        Logger.SendLog("Volviendo al MENU. Desde el GAMEPLAY.\n");
         SceneManager.LoadScene("MainMenu");
     }
     public void EnterStore()
     {
-        Logger.SendLog("Yendo a la STORE, desde el GAMEPLAY");
+        Logger.SendLog("Yendo a la STORE, desde el GAMEPLAY.\n");
         SceneManager.LoadScene("Store");
     }
     private void SaveCurrency()
