@@ -6,11 +6,11 @@ using System;
 public class Auth : MonoBehaviour
 {
 
-    //void Start()
-    //{
-    //    if (Application.platform == RuntimePlatform.Android)
-    //        Init();
-    //}
+    void Start()
+    {
+        if (Application.platform == RuntimePlatform.Android)
+            Init();
+    }
     private void Init()
     {
         PlayGamesPlatform.Instance.Authenticate(success =>
@@ -46,8 +46,11 @@ public class Auth : MonoBehaviour
         {
             if (PlayGamesPlatform.Instance.IsAuthenticated())
             {
-                PlayGamesPlatform.Instance.ReportProgress(a, 100f, success => { });
-                Logger.SendLog("\nLogro desbloqueado!\n");
+                PlayGamesPlatform.Instance.ReportProgress(a, 100f, success => 
+                {
+                    Logger.SendLog("\nLogro desbloqueado!\n");
+                });
+                
             }
         }
     }
